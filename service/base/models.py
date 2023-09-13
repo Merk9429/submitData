@@ -2,11 +2,10 @@ from django.db import models
 from django.utils import timezone
 
 
-def get_image_path(instance, file): # прописываю путь сохранения изображений, у каждой записи PerevalAdded своя папка
+def get_image_path(instance, file):
     return f'image/point-{instance.pereval.id}/{file}'
 
 
-# Активность - способ прохождения локации, вывел в список кортежей
 ACTIVITIES = [
     ('foot', 'пеший'),
     ('bike', 'велосипед'),
@@ -14,7 +13,6 @@ ACTIVITIES = [
     ('motorbike', 'мотоцикл'),
 ]
 
-# Вид локации, вывел в список кортежей
 BEAUTYTITLE = [
     ('the_pass', 'перевал'),
     ('mountain_peak', 'горная вершина'),
@@ -22,7 +20,6 @@ BEAUTYTITLE = [
     ('plateau', 'плато'),
 ]
 
-# статус добавленной записи пользователя, списком кортежей
 STATUS = [
     ('new', 'новый'),
     ('at_work', 'в работе'),
@@ -30,7 +27,6 @@ STATUS = [
     ('rejected', 'отклонен'),
 ]
 
-# Уровень сложности прохождения локации, списком кортежей
 LEVELS = [
     ('', 'не указано'),
     ('1A', '1a'),
@@ -59,32 +55,32 @@ class Coords(models.Model):
     height = models.IntegerField('высота', blank=True)
 
 
-class PointAdded(models.Model):
-    status = models.CharField(choices=STATUS, max_length=25, default='new') #статус нового сообщения, по умолчанию Новое
-    beautyTitle = models.CharField('тип', choices=BEAUTYTITLE, max_length=50)#тип локации - перевал, ущелье и т.д. списком
-    title = models.CharField('название', max_length=50, blank=True)# название локации
-    other_titles = models.CharField('иные названия', max_length=50)# описание локации
-    connect = models.CharField('соединение', max_length=250)# какие локации соединяет (применимо к перевалу)
-    add_time = models.DateTimeField(default=timezone.now, editable=False)#дата/время создания записи (не понял пользователь вручную создает или автоматическое поле при добавлении в БД)
-    coord_id = models.OneToOneField(Coords, on_delete=models.CASCADE)# ссылка на объект с координатами локации. Зачем если связь один к одному?
-    winter = models.CharField('зима', max_length=2, choices=LEVELS)# уровень сложности прохождения локации зимой
-    summer = models.CharField('лето', max_length=2, choices=LEVELS)# уровень сложности прохождения локации летом
-    autumn = models.CharField('осень', max_length=2, choices=LEVELS)# уровень сложности прохождения локации осенью
-    spring = models.CharField('весна', max_length=2, choices=LEVELS)# уровень сложности прохождения локации весной
-    author = models.ForeignKey(Users, on_delete=models.CASCADE)# автор статьи - ссылка на объект пользователей
+class PerevalAdded(models.Model):
+    status = models.CharField(choices=STATUS, max_length=25, default='new')
+    beautyTitle = models.CharField('тип', choices=BEAUTYTITLE, max_length=50)
+    title = models.CharField('название', max_length=50, blank=True)
+    other_titles = models.CharField('иные названия', max_length=50)
+    connect = models.CharField('соединение', max_length=250)
+    add_time = models.DateTimeField(default=timezone.now, editable=False)
+    coord_id = models.OneToOneField(Coords, on_delete=models.CASCADE)
+    winter = models.CharField('зима', max_length=2, choices=LEVELS)
+    summer = models.CharField('лето', max_length=2, choices=LEVELS)
+    autumn = models.CharField('осень', max_length=2, choices=LEVELS)
+    spring = models.CharField('весна', max_length=2, choices=LEVELS)
+    author = models.ForeignKey(Users, on_delete=models.CASCADE)
 
 
 class Images(models.Model):
-    name = models.CharField(max_length=50)# название фотографии
-    photos = models.ImageField('Фото', upload_to=get_image_path, blank=True, null=True)# объект фотографии
+    name = models.CharField(max_length=50)
+    photos = models.ImageField('Фото', upload_to=get_image_path, blank=True, null=True)
 
 
-class PointImages(models.Model):
-    point = models.ForeignKey(PointAdded, on_delete=models.CASCADE, default=0)  # ссылка на объект локации
-    images = models.ForeignKey(Images, on_delete=models.CASCADE, default=0)  # ссылка на объект фотографии
+class PerevalImages(models.Model):
+    point = models.ForeignKey(PerevalAdded, on_delete=models.CASCADE, default=0)
+    images = models.ForeignKey(Images, on_delete=models.CASCADE, default=0)
 
 
-class PointAreas(models.Model):
+class PerevalAreas(models.Model):
 
     id_parent = models.IntegerField(blank=True)
     title = models.TextField()
