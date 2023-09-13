@@ -59,11 +59,6 @@ class ImagesViewSet(viewsets.ModelViewSet):
     serializer_class = ImagesSerializer
 
 
-class PerevalImagesViewSet(viewsets.ModelViewSet):
-    queryset = PerevalImages.objects.all()
-    serializer_class = PerevalImagesSerializer
-
-
 class CoordViewSet(viewsets.ModelViewSet):
     queryset = Coords.objects.all()
     serializer_class = CoordsSerializer

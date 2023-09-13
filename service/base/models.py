@@ -55,6 +55,11 @@ class Coords(models.Model):
     height = models.IntegerField('высота', blank=True)
 
 
+class Images(models.Model):
+    name = models.CharField(max_length=50)
+    photos = models.ImageField('Фото', upload_to=get_image_path, blank=True, null=True)
+
+
 class PerevalAdded(models.Model):
     status = models.CharField(choices=STATUS, max_length=25, default='new')
     beautyTitle = models.CharField('тип', choices=BEAUTYTITLE, max_length=50)
@@ -68,11 +73,7 @@ class PerevalAdded(models.Model):
     autumn = models.CharField('осень', max_length=2, choices=LEVELS)
     spring = models.CharField('весна', max_length=2, choices=LEVELS)
     author = models.ForeignKey(Users, on_delete=models.CASCADE)
-
-
-class Images(models.Model):
-    name = models.CharField(max_length=50)
-    photos = models.ImageField('Фото', upload_to=get_image_path, blank=True, null=True)
+    images = models.ForeignKey(Images, on_delete=models.CASCADE, default=0)
 
 
 class PerevalImages(models.Model):

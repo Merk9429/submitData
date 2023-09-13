@@ -14,12 +14,6 @@ class ImagesSerializer(serializers.ModelSerializer):
         fields = ('name', 'photos')
 
 
-class PerevalImagesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PerevalImages
-        fields = ('point', 'images')
-
-
 class CoordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coords
@@ -27,14 +21,14 @@ class CoordsSerializer(serializers.ModelSerializer):
 
 
 class PerevalAddedSerializer(serializers.ModelSerializer):
-    user = UsersSerializer(required=False)
+    author = UsersSerializer(required=False)
     coord_id = CoordsSerializer(required=False)
     images = ImagesSerializer()
 
     class Meta:
         model = PerevalAdded
         fields = ('status', 'beautyTitle', 'title', 'other_titles', 'connect', 'add_time', 'coord_id',
-                  'winter', 'summer', 'autumn', 'spring', 'user', 'images')
+                  'winter', 'summer', 'autumn', 'spring', 'author', 'images')
 
     def create(self, validated_data):
         user = validated_data.pop('user')
