@@ -85,10 +85,10 @@ WSGI_APPLICATION = 'service.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('FSTR_DB_HOST'),
-        'NAME': os.environ.get('FSTR_DB_NAME'),
-        'LOGIN': os.environ.get('FSTR_DB_LOGIN'),
-        'PASSWORD': os.environ.get('FSTR_DB_PASS'),
+        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME'),
+        'LOGIN': os.environ.get('DB_LOGIN'),
+        'PASSWORD': os.environ.get('DB_PASS'),
     }
 }
 
