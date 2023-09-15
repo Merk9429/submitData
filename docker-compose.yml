@@ -9,7 +9,7 @@ services:
     environment:
       - FSTR_DB_HOST=database
       - FSTR_DB_NAME=dbname
-      - FSTR_DB_LOGIN=dbuser
+      - FSTR_DB_USER=dbuser
       - FSTR_DB_PASS=pass
 
     command: >
@@ -22,5 +22,5 @@ services:
     image: postgres:14.6-alpine
     environment:
       - POSTGRES_DB=dbname
-      - POSTGRES_LOGIN=dbuser
+      - POSTGRES_USER=dbuser
       - POSTGRES_PASSWORD=pass

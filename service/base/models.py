@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 def get_image_path(instance, file):
@@ -72,7 +73,7 @@ class PerevalAdded(models.Model):
     summer = models.CharField('лето', max_length=2, choices=LEVELS)
     autumn = models.CharField('осень', max_length=2, choices=LEVELS)
     spring = models.CharField('весна', max_length=2, choices=LEVELS)
-    author = models.ForeignKey(Users, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
     images = models.ForeignKey(Images, on_delete=models.CASCADE, default=0)
 
 
