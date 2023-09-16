@@ -1,87 +1,93 @@
 from django.db import models
-from django.utils import timezone
-from django.contrib.auth.models import User
 
 
-def get_image_path(instance, file):
-    return f'image/point-{instance.pereval.id}/{file}'
-
-
-ACTIVITIES = [
-    ('foot', 'пеший'),
-    ('bike', 'велосипед'),
-    ('car', 'автомобиль'),
-    ('motorbike', 'мотоцикл'),
-]
-
-BEAUTYTITLE = [
-    ('the_pass', 'перевал'),
-    ('mountain_peak', 'горная вершина'),
-    ('gorge', 'ущелье'),
-    ('plateau', 'плато'),
-]
-
-STATUS = [
-    ('new', 'новый'),
-    ('at_work', 'в работе'),
-    ('accepted', 'принят'),
-    ('rejected', 'отклонен'),
-]
-
-LEVELS = [
-    ('', 'не указано'),
-    ('1A', '1a'),
-    ('1B', '1б'),
-    ('2А', '2а'),
-    ('2В', '2б'),
-    ('3А', '3а'),
-    ('3В', '3б'),
-    ]
-
-
-class Users(models.Model):
-    mail = models.EmailField('почта', unique=True)
-    phone = models.CharField('телефон', max_length=15)
-    name = models.CharField('имя', max_length=30)
-    surname = models.CharField('фамилия', max_length=30)
-    patronymic = models.CharField('отчество', max_length=30)
-
-    def __str__(self):
-        return f'{self.surname}'
+class User(models.Model):
+    email = models.EmailField(max_length=255)
+    phone = models.CharField(max_length=11)
+    fam = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    otc = models.CharField(max_length=255)
 
 
 class Coords(models.Model):
-    latitude = models.FloatField('широта', max_length=9, blank=True)
-    longitude = models.FloatField('долгота', max_length=9, blank=True)
-    height = models.IntegerField('высота', blank=True)
+    latitude = models.FloatField(max_length=50, verbose_name='Широта')
+    longitude = models.FloatField(max_length=50, verbose_name='Долгота')
+    height = models.IntegerField(verbose_name='Высота')
+
+    def __str__(self):
+        return f'{self.latitude},{self.longitude},{self.height}'
+
+    class Meta:
+        verbose_name = 'Координаты'
+        verbose_name_plural = 'Координаты'
 
 
-class PerevalAdded(models.Model):
-    status = models.CharField(choices=STATUS, max_length=25, default='new')
-    beautyTitle = models.CharField('тип', choices=BEAUTYTITLE, max_length=50)
-    title = models.CharField('название', max_length=50, blank=True)
-    other_titles = models.CharField('иные названия', max_length=50)
-    connect = models.CharField('соединение', max_length=250)
-    add_time = models.DateTimeField(default=timezone.now, editable=False)
-    coord_id = models.OneToOneField(Coords, on_delete=models.CASCADE)
-    winter = models.CharField('зима', max_length=2, choices=LEVELS)
-    summer = models.CharField('лето', max_length=2, choices=LEVELS)
-    autumn = models.CharField('осень', max_length=2, choices=LEVELS)
-    spring = models.CharField('весна', max_length=2, choices=LEVELS)
-    author = models.ForeignKey(Users, on_delete=models.PROTECT)
+LEVEL = [
+    ('1a', '1A'),
+    ('1b', '1Б'),
+    ('2a', '2А'),
+    ('2b', '2Б'),
+    ('3a', '3А'),
+    ('3b', '3Б'),
+    ('4a', '4А'),
+    ('4b', '4Б'),
+    ('5a', '5А'),
+    ('5b', '5Б'),
+]
 
 
-class Images(models.Model):
-    name = models.CharField('Имя', max_length=50)
-    photos = models.ImageField('Фото', upload_to=get_image_path, blank=True, null=True)
+class Level(models.Model):
+    winter = models.CharField(max_length=2, choices=LEVEL, verbose_name='Зима', null=True, blank=True, )
+    summer = models.CharField(max_length=2, choices=LEVEL, verbose_name='Лето', null=True, blank=True, )
+    autumn = models.CharField(max_length=2, choices=LEVEL, verbose_name='Осень', null=True, blank=True, )
+    spring = models.CharField(max_length=2, choices=LEVEL, verbose_name='Весна', null=True, blank=True, )
+
+    def __str__(self):
+        return f'{self.winter} {self.summer} {self.autumn} {self.spring}'
+
+    class Meta:
+        verbose_name = 'Уровень сложности перевала'
+        verbose_name_plural = 'Уровни сложности перевала'
 
 
-class PerevalImages(models.Model):
-    point = models.ForeignKey(PerevalAdded, on_delete=models.CASCADE, default=0)
-    images = models.ForeignKey(Images, on_delete=models.CASCADE, default=0)
+class Mount(models.Model):
+    new = 'new'
+    pending = 'pending'
+    accepted = 'accepted'
+    rejected = 'rejected'
+    STATUS = [
+        (new, 'новая информация'),
+        (pending, 'модератор взял в работу'),
+        (accepted, 'модерация прошла успешно'),
+        (rejected, 'модерация прошла, информация не принята'),
+    ]
+
+    beauty_title = models.CharField(max_length=255, verbose_name='Общее название', default=None)
+    title = models.CharField(max_length=255, verbose_name='Название горы', null=True, blank=True)
+    other_titles = models.CharField(max_length=255, verbose_name='Альтернативное название горы')
+    connect = models.TextField(null=True, blank=True)
+    add_time = models.DateTimeField(auto_now_add=True)
+    coords = models.OneToOneField(Coords, on_delete=models.CASCADE)
+    level = models.ForeignKey(Level, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS, default=new)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return f'{self.pk} {self.beauty_title}'
+
+    class Meta:
+        verbose_name = 'Перевал'
+        verbose_name_plural = 'Перевалы'
 
 
-class PerevalAreas(models.Model):
+class Photo(models.Model):
+    mount = models.ForeignKey(Mount, on_delete=models.CASCADE)
+    data = models.ImageField(upload_to='images/%Y-%m-%d/', verbose_name='Изображение', null=True)
+    title = models.CharField(max_length=255, verbose_name='Название')
 
-    id_parent = models.IntegerField(blank=True)
-    title = models.TextField()
+    def __str__(self):
+        return f'{self.pk} {self.title}'
+
+    class Meta:
+        verbose_name = 'Изображения'
+        verbose_name_plural = 'Изображения'
