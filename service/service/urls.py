@@ -33,7 +33,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('swagger-ui/', TemplateView.as_view(
+    path('swagger/', TemplateView.as_view(
         template_name='swagger.html',
         extra_context={'schema_url': 'openapi-schema'}
     ), name='swagger'),
