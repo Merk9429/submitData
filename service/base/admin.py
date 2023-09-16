@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import User, Coords, Mount, Photo, Level
+from .models import *
 
-admin.site.register(User)
+admin.site.register(Author)
 admin.site.register(Coords)
+admin.site.register(Images)
 admin.site.register(Level)
-admin.site.register(Mount)
-admin.site.register(Photo)
+admin.site.register(Pereval)

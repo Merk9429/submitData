@@ -1,93 +1,107 @@
 from django.db import models
 
 
-class User(models.Model):
-    email = models.EmailField(max_length=255)
-    phone = models.CharField(max_length=11)
-    fam = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    otc = models.CharField(max_length=255)
+class Author(models.Model):
+    email = models.EmailField(verbose_name='электронная почта')
+    phone = models.CharField(verbose_name='номер телефона', max_length=12)
+    fam = models.CharField(verbose_name='фамилия', max_length=30)
+    name = models.CharField(verbose_name='имя', max_length=30)
+    otc = models.CharField(verbose_name='отчество', max_length=30)
 
 
 class Coords(models.Model):
-    latitude = models.FloatField(max_length=50, verbose_name='Широта')
-    longitude = models.FloatField(max_length=50, verbose_name='Долгота')
-    height = models.IntegerField(verbose_name='Высота')
-
-    def __str__(self):
-        return f'{self.latitude},{self.longitude},{self.height}'
-
-    class Meta:
-        verbose_name = 'Координаты'
-        verbose_name_plural = 'Координаты'
-
-
-LEVEL = [
-    ('1a', '1A'),
-    ('1b', '1Б'),
-    ('2a', '2А'),
-    ('2b', '2Б'),
-    ('3a', '3А'),
-    ('3b', '3Б'),
-    ('4a', '4А'),
-    ('4b', '4Б'),
-    ('5a', '5А'),
-    ('5b', '5Б'),
-]
+    latitude = models.FloatField(verbose_name='широта', max_length=8)
+    longitude = models.FloatField(verbose_name='долгота', max_length=8)
+    height = models.IntegerField(verbose_name='высота')
 
 
 class Level(models.Model):
-    winter = models.CharField(max_length=2, choices=LEVEL, verbose_name='Зима', null=True, blank=True, )
-    summer = models.CharField(max_length=2, choices=LEVEL, verbose_name='Лето', null=True, blank=True, )
-    autumn = models.CharField(max_length=2, choices=LEVEL, verbose_name='Осень', null=True, blank=True, )
-    spring = models.CharField(max_length=2, choices=LEVEL, verbose_name='Весна', null=True, blank=True, )
-
-    def __str__(self):
-        return f'{self.winter} {self.summer} {self.autumn} {self.spring}'
-
-    class Meta:
-        verbose_name = 'Уровень сложности перевала'
-        verbose_name_plural = 'Уровни сложности перевала'
-
-
-class Mount(models.Model):
-    new = 'new'
-    pending = 'pending'
-    accepted = 'accepted'
-    rejected = 'rejected'
-    STATUS = [
-        (new, 'новая информация'),
-        (pending, 'модератор взял в работу'),
-        (accepted, 'модерация прошла успешно'),
-        (rejected, 'модерация прошла, информация не принята'),
+    LEVEL_CHOICE = [
+        ('NI', 'нет информации'),
+        ('A1', '1А'),
+        ('B1', '1Б'),
+        ('А2', '2А'),
+        ('В2', '2Б'),
+        ('А3', '3А'),
+        ('В3', '3Б'),
     ]
 
-    beauty_title = models.CharField(max_length=255, verbose_name='Общее название', default=None)
-    title = models.CharField(max_length=255, verbose_name='Название горы', null=True, blank=True)
-    other_titles = models.CharField(max_length=255, verbose_name='Альтернативное название горы')
-    connect = models.TextField(null=True, blank=True)
+    winter = models.CharField(verbose_name='уровень сложности зимой',
+                              max_length=2,
+                              choices=LEVEL_CHOICE,
+                              default='NI')
+    summer = models.CharField(verbose_name='уровень сложности летом',
+                              max_length=2,
+                              choices=LEVEL_CHOICE,
+                              default='NI')
+    autumn = models.CharField(verbose_name='уровень сложности осенью',
+                              max_length=2,
+                              choices=LEVEL_CHOICE,
+                              default='NI')
+    spring = models.CharField(verbose_name='уровень сложности весной',
+                              max_length=2,
+                              choices=LEVEL_CHOICE,
+                              default='NI')
+
+
+class Pereval(models.Model):
+    BEAUTY_CHOICE = [
+        ('NI', 'нет информации'),
+        ('PS', 'Перевал'),
+        ('TP', 'Вершина'),
+        ('GL', 'Ледник'),
+        ('IO', 'Объект инфраструктуры'),
+        ('NO', 'Объект природы'),
+
+    ]
+
+    STATUS_CHOICE = [
+        ('NEW', 'новый'),
+        ('PEN', 'в работе'),
+        ('ACC', 'принят'),
+        ('REJ', 'отклонен'),
+    ]
+
+    ACTIVITIES_CHOICE = [
+        ('1', 'пешком'),
+        ('2', 'лыжи'),
+        ('3', 'катамаран'),
+        ('4', 'байдарка'),
+        ('5', 'плот'),
+        ('6', 'сплав'),
+        ('7', 'велосипед'),
+        ('8', 'автомобиль'),
+        ('9', 'мотоцикл'),
+        ('10', 'парус'),
+        ('11', 'верхом'),
+    ]
+
+    beauty_title = models.CharField(verbose_name='тип высоты',
+                                    max_length=2,
+                                    choices=BEAUTY_CHOICE,
+                                    default='NI')
+    title = models.TextField(verbose_name='название')
+    other_titles = models.TextField(verbose_name='комментарий')
+    connect = models.TextField(verbose_name='соединение',
+                               default='', blank=True)
     add_time = models.DateTimeField(auto_now_add=True)
-    coords = models.OneToOneField(Coords, on_delete=models.CASCADE)
-    level = models.ForeignKey(Level, on_delete=models.CASCADE, null=True, blank=True)
-    status = models.CharField(max_length=10, choices=STATUS, default=new)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE,
+                               verbose_name='автор')
+    coords = models.ForeignKey(Coords, on_delete=models.CASCADE,
+                               verbose_name='координаты')
+    level = models.ForeignKey(Level, on_delete=models.CASCADE,
+                              verbose_name='уровень сложности')
+    status = models.CharField(choices=STATUS_CHOICE, max_length=3,
+                              default='NEW', verbose_name='статус')
+    spr_activities_types = models.CharField(max_length=2,
+                                            choices=ACTIVITIES_CHOICE,
+                                            default='1',
+                                            verbose_name='активность'
+                                            )
 
-    def __str__(self):
-        return f'{self.pk} {self.beauty_title}'
 
-    class Meta:
-        verbose_name = 'Перевал'
-        verbose_name_plural = 'Перевалы'
-
-
-class Photo(models.Model):
-    mount = models.ForeignKey(Mount, on_delete=models.CASCADE)
-    data = models.ImageField(upload_to='images/%Y-%m-%d/', verbose_name='Изображение', null=True)
-    title = models.CharField(max_length=255, verbose_name='Название')
-
-    def __str__(self):
-        return f'{self.pk} {self.title}'
-
-    class Meta:
-        verbose_name = 'Изображения'
-        verbose_name_plural = 'Изображения'
+class Images(models.Model):
+    image_name = models.TextField(verbose_name='комментарий')
+    image = models.URLField(verbose_name='фотография', blank=True, null=True)
+    pereval = models.ForeignKey(Pereval, on_delete=models.CASCADE,
+                                verbose_name='перевал', related_name='image')
