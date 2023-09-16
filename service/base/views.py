@@ -55,10 +55,8 @@ class SubmitData(viewsets.ModelViewSet):
             message = ('Запись успешно отредактирована. '
                        'Замена автора не предусмотрена.')
 
-
         if pereval.status == 'NEW':
-            serializer = PerevalAddedSerializer(pereval, data=request.data,
-                                                 partial=True)
+            serializer = PerevalAddedSerializer(pereval, data=request.data, partial=True)
             if serializer.is_valid():
                 obj = serializer.save()
                 return Response(
