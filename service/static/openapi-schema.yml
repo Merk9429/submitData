@@ -8,15 +8,15 @@ paths:
       operationId: SubmitData
       description: 'List of perevals'
       parameters: []
-    responses:
-      '200':
-        content:
-          application/json:
-            schema:
-              type: object
-              items:
-              $ref: '#/components/schemas/pereval'
-          description: Success
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/pereval'
+            description:  Success
       tags:
         - pereval
 
@@ -119,10 +119,10 @@ paths:
           required: true
           schema:
             type: string
-      responses:
-        '200':
-          content:
-            application/json:
+    responses:
+      '200':
+        content:
+          application/json:
             schema:
               type: object
               items:
