@@ -7,10 +7,10 @@ services:
     volumes:
       - ./service:/service
     environment:
-      - DB_HOST=database
-      - DB_NAME=dbname
-      - DB_USER=dbuser
-      - DB_PASS=pass
+      - FSTR_DB_HOST=database
+      - FSTR_DB_PORT=dbname
+      - FSTR_DB_LOGIN=dbuser
+      - FSTR_DB_PASS=pass
 
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
