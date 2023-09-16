@@ -12,11 +12,11 @@ paths:
         '200':
           content:
             application/json:
-              schema:
-                type: object
-                items:
-                $ref: '#/components/schemas/pereval'
-            description: Success
+            schema:
+              type: object
+              items:
+              $ref: '#/components/schemas/pereval'
+          description: Success
       tags:
         - pereval
 
@@ -35,18 +35,18 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/pereval'
-    responses:
-      '201':
+      responses:
+        '201':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/pereval'
           description: Success'
-      '405':
+        '405':
           description: Invalid input
-      '400':
+        '400':
           description: Bad Request
-      tags:
+        tags:
           - pereval
 
   /SubmitData/{id}/:
@@ -59,11 +59,11 @@ paths:
           required: true
           schema:
             type: integer
-    responses:
-        '200' :
+        responses:
+          '200' :
             $ref: '#/components/schemas/pereval'
             description: 'Success'
-        '404':
+          '404':
             description: 'Not found'
             content:
               text/plain:
@@ -71,7 +71,7 @@ paths:
                   title: Not found
                   type: string
                   example: Not found
-        '500':
+          '500':
             description: Invalid input
             content:
               application/json:
@@ -100,14 +100,14 @@ paths:
             multipart/form-data:
               schema:
                 $ref: '#/components/schemas/pereval'
-          responses:
-        '200' :
-          $ref: '#/components/schemas/pereval'
-          description: Success
-        '404' :
-          description: Not found
+        responses:
+          '200' :
+            $ref: '#/components/schemas/pereval'
+            description: Success
+          '404' :
+            description: Not found
         tags:
-          - pereval
+        - pereval
 
   /SubmitData/?author__email={email}:
     get:
