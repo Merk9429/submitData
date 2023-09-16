@@ -6,7 +6,7 @@ markdown
 django-filter
 Pillow
 drf_writable_nested
-#python-dotenv==1.0.0
-#coreapi==2.3.3
-#coreschema==0.0.4
-#PyYAML==6.0.1
+python-dotenv==1.0.0
+coreapi==2.3.3
+coreschema==0.0.4
+PyYAML==6.0.1
