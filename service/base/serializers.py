@@ -15,21 +15,6 @@ class AuthorSerializer(serializers.ModelSerializer):
                   'otc'
                   ]
 
-    # def save(self, **kwargs):
-    #     self.is_valid()
-    #     current_author = Author.objects.filter(email=self.validated_data['email'])
-    #     if current_author.exists():
-    #         return current_author
-    #     else:
-    #         new_author = Author.objects.create(
-    #             fam=self.validated_data.get('fam'),
-    #             name=self.validated_data.get('name'),
-    #             otc=self.validated_data.get('otc'),
-    #             phone=self.validated_data.get('phone'),
-    #             email=self.validated_data.get('email'),
-    #         )
-    #         return new_author
-
 
 class CoordsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -86,20 +71,6 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
         images = validated_data.pop('image')
 
         author, created = Author.objects.get_or_create(**author)
-
-        # current_author = Author.objects.filter(email=author['email'])
-        # if current_author.exists():
-        #     author = current_author.first()
-        # else:
-        #     author = Author.objects.create(**author)
-
-        # current_author = Author.objects.filter(email=author['email'])
-        # if current_author.exists():
-        #     author_serializer = AuthorSerializer(data=author)
-        #     author_serializer.is_valid(raise_exception=True)
-        #     author = author_serializer.save()
-        # else:
-        #     author = Author.objects.create(**author)
 
         coords = Coords.objects.create(**coords)
         level = Level.objects.create(**level)
