@@ -32,10 +32,9 @@ router.register(r'SubmitData', SubmitData)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls',
-                             namespace='rest_framework')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('swagger-ui/', TemplateView.as_view(
-        template_name='swagger-ui.html',
+        template_name='swagger.html',
         extra_context={'schema_url': 'openapi-schema'}
-    ), name='swagger-ui'),
+    ), name='swagger'),
 ]
