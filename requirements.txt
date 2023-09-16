@@ -5,3 +5,4 @@ django-rest-framework
 markdown
 django-filter
 Pillow
+drf_writable_nested
