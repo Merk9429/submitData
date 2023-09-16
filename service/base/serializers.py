@@ -31,7 +31,7 @@ class PerevalAddedSerializer(serializers.ModelSerializer):
                   'winter', 'summer', 'autumn', 'spring', 'author', 'images')
 
     def create(self, validated_data):
-        user = validated_data.pop('user')
+        user = validated_data.pop('author')
         coords = validated_data.pop('coord_id')
         images = validated_data.pop('images')
         current_user = Users.objects.filter(mail=user['mail'])
@@ -58,7 +58,7 @@ class PerevalAddedSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if self.instance is not None:
             instance_user = self.instance.user
-            data_user = data.get('user')
+            data_user = data.get('author')
             user_fields_for_validation = [
                 instance_user.surname != data_user['surname'],
                 instance_user.name != data_user['name'],
