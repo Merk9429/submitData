@@ -1,4 +1,3 @@
-from .models import *
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
@@ -30,7 +29,7 @@ class ImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
         fields = ['image_name',
-                  'image'
+                  'image',
                   ]
 
 
