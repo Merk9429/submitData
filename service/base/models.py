@@ -99,9 +99,12 @@ class Pereval(models.Model):
                                             verbose_name='активность'
                                             )
 
+    def __str__(self):
+        return self.title
+
 
 class Images(models.Model):
     image_name = models.TextField(verbose_name='комментарий')
-    image = models.ImageField(verbose_name='фотография', blank=True)
+    image = models.URLField(verbose_name='фотография', blank=True)
     pereval = models.ForeignKey(Pereval, on_delete=models.CASCADE,
                                 verbose_name='перевал', related_name='image')

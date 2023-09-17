@@ -30,6 +30,7 @@ class ImagesSerializer(serializers.ModelSerializer):
         model = Images
         fields = ['image_name',
                   'image',
+                  'pereval'
                   ]
 
 
@@ -47,7 +48,6 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
     author = AuthorSerializer()
     coords = CoordsSerializer()
     level = LevelSerializer()
-    image = ImagesSerializer(many=True)
 
     class Meta:
         model = Pereval
@@ -58,7 +58,6 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
                   'author',
                   'coords',
                   'level',
-                  'image',
                   'status',
                   'spr_activities_types'
                   ]
@@ -67,7 +66,6 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
         author = validated_data.pop('author')
         coords = validated_data.pop('coords')
         level = validated_data.pop('level')
-        images = validated_data.pop('image')
 
         author, created = Author.objects.get_or_create(**author)
 
@@ -78,13 +76,5 @@ class PerevalAddedSerializer(WritableNestedModelSerializer):
                                          coords=coords,
                                          level=level
                                          )
-
-        if images:
-            for image in images:
-                image_name = image.pop('image_name')
-                image = image.pop('image')
-                Images.objects.create(pereval=pereval,
-                                      image_name=image_name,
-                                      image=image)
 
         return pereval
