@@ -185,20 +185,20 @@ components:
       properties:
         email:
           type: string
-          example: abc@yandex.ru
+          example: Merk_94@mail.ru
         fam:
           type: string
-          example: Иванов
+          example: Пупкин
         name:
           type: string
-          example: Иван
+          example: Вячеслав
         otc:
           type: string
-          example: Иванович
+          example: Пупкинович
 
         phone:
           type: string
-          example: +74951111111
+          example: +79605558766
 
 
     Coords:
