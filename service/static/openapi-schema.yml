@@ -166,7 +166,8 @@ components:
           type: array
           $ref: '#/components/schemas/Images'
           example: [
-                     {"image_name": "перевал 1", "image": "https://www.nastol.com.ua/pic/201411/1280x1024/nastol.com.ua-116730.jpg"},
+                     {"image_name": "вершина 1", "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"},
+                     {"image_name": "вершина 2", "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"},
                    ]
         status:
           type: string
@@ -184,20 +185,20 @@ components:
       properties:
         email:
           type: string
-          example: Merk_94@mail.ru
+          example: abc@yandex.ru
         fam:
           type: string
-          example: Пупкин
+          example: Иванов
         name:
           type: string
-          example: Вячеслав
+          example: Иван
         otc:
           type: string
-          example: Пупкинович
+          example: Иванович
 
         phone:
           type: string
-          example: +79605558766
+          example: +74951111111
 
 
     Coords:
@@ -207,13 +208,13 @@ components:
       properties:
         latitude:
           type: number
-          example: 2342.0
+          example: 27.988056
         longitude:
           type: number
-          example: 2435.0
+          example: 86.925278
         height:
           type: integer
-          example: 4566
+          example: 8848
 
     Level:
       type: object
