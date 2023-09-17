@@ -166,8 +166,7 @@ components:
           type: array
           $ref: '#/components/schemas/Images'
           example: [
-                     {"image_name": "вершина 1", "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"},
-                     {"image_name": "вершина 2", "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"},
+                     {"image_name": "перевал 1", "image": "https://www.nastol.com.ua/pic/201411/1280x1024/nastol.com.ua-116730.jpg"},
                    ]
         status:
           type: string
