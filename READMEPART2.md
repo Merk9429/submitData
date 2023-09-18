@@ -1,5 +1,7 @@
 # Виртуальная стажировка.
 
+# Создаем REST API для моб.приложения.
+
 # 1. Устанавливаем и запускаем Docker:
 docker.com
 # 2. Создаем репозиторий на Git.
@@ -23,131 +25,148 @@ docker.com
 # 8. Создаем проект Django через Docker:
 - docker-compose run --rm web-app sh -c "django-admin startproject ..."
 - для проверки проекта можно его запустить docker-compose up
-
-Установить пароль суперпользователя:
-**ALTER USER postgres WITH PASSWORD 'мой стандартный пароль';**
-
-Создать нового пользователя:
-**CREATE USER nazrinrus WITH PASSWORD 'мой стандартный пароль';**
-
-# 7. Описание моделей:
+- Подключаем Postgres к приложению Django через Docker
+# 9. Подключаем второй интерпретатор к PyCharm:
+- Add New Interpreter - Add Local Interpreter...
+# 10. Устанавливаем psycopg2 и postgresql-client в Docker:
+- Добавляем их в файл requirements.txt
+# 11. Применяем manage.py migrate в docker-compose:
+- docker-compose run --rm web-app sh -c "python manage.py migrate"
+- для заметки: для создания миграций docker-compose run --rm web-app sh -c "python manage.py makemigration"
+# 12. Создаем суперпользователя в docker-compose:
+- docker-compose run --rm web-app sh -c "python manage.py createsuperuser"
+- вводим логин
+- вводим email(по желанию)
+- вводим пароль(c использованием букв, символов по желанию)
+- вводим пароль повторно
+# 13. Описание моделей:
 
 Данные, являющиеся константами, практически не изменяющиеся, выведены за пределы моделей в списки кортежей, такие как:
 
 1) Активность - способ прохождения локации, вывел в список кортежей
 
-`ACTIVITIES = [
-    ('foot', 'пеший'),
-    ('bike', 'велосипед'),
-    ('car', 'автомобиль'),
-    ('motorbike', 'мотоцикл'),
-]`
+`ACTIVITIES_CHOICE = [
+        ('1', 'пешком'),
+        ('2', 'лыжи'),
+        ('3', 'катамаран'),
+        ('4', 'байдарка'),
+        ('5', 'плот'),
+        ('6', 'сплав'),
+        ('7', 'велосипед'),
+        ('8', 'автомобиль'),
+        ('9', 'мотоцикл'),
+        ('10', 'парус'),
+        ('11', 'верхом'),
+    ]`
 
 2) Вид локации, вывел в список кортежей
 
-`BEAUTYTITLE = [
-    ('poss', 'перевал'),
-    ('mountain_peak', 'горная вершина'),
-    ('gorge', 'ущелье'),
-    ('plateau', 'плато'),
-]`
-
-3) статус добавленной записи пользователя, списком кортежей
-`STATUS = [
-    ('new', 'новый'),
-    ('pending', 'на модерации'),
-    ('accepted', 'принят'),
-    ('rejected', 'не принят'),
-]`
-
-4) Уровень сложности прохождения локации, списком кортежей
-`LEVELS = [
-    ('', 'не указано'),
-    ('1A', '1a'),
-    ('1B', '1б'),
-    ('2А', '2а'),
-    ('2В', '2б'),
-    ('3А', '3а'),
-    ('3В', '3б'),
+`BEAUTY_CHOICE = [
+        ('NI', 'нет информации'),
+        ('PS', 'Перевал'),
+        ('TP', 'Вершина'),
+        ('GL', 'Ледник'),
+        ('IO', 'Объект инфраструктуры'),
+        ('NO', 'Объект природы'),
     ]`
 
-*Модель PerevalAdded - основные данные добавленные туристом:*
+3) статус добавленной записи пользователя, списком кортежей
 
-`class PerevalAdded(models.Model):
-    status = models.CharField(choices=STATUS, max_length=25, default='new') #статус нового сообщения, по умолчанию Новое
-    beautyTitle = models.CharField('тип', choices=BEAUTYTITLE, max_length=50)#тип локации - перевал, ущелье и т.д. списком
-    title = models.CharField('название', max_length=50, blank=True)# название локации
-    other_titles = models.CharField('иные названия', max_length=50)# описание локации
-    connect = models.CharField('соединение', max_length=250)# какие локации соединяет (применимо к перевалу)
-    add_time = models.DateTimeField(default=timezone.now, editable=False)#дата/время создания записи (не понял пользователь вручную создает или автоматическое поле при добавлении в БД)
-    coord_id = models.OneToOneField(Coords, on_delete=models.CASCADE)# ссылка на объект с координатами локации. Зачем если связь один к одному?
-    winter = models.CharField('зима', max_length=2, choices=LEVELS)# уровень сложности прохождения локации зимой
-    summer = models.CharField('лето', max_length=2, choices=LEVELS)# уровень сложности прохождения локации летом
-    autumn = models.CharField('осень', max_length=2, choices=LEVELS)# уровень сложности прохождения локации осенью
-    spring = models.CharField('весна', max_length=2, choices=LEVELS)# уровень сложности прохождения локации весной
-    author = models.ForeignKey(Users, on_delete=models.CASCADE)# автор статьи - ссылка на объект пользователей`
+`STATUS_CHOICE = [
+        ('NEW', 'новый'),
+        ('PEN', 'в работе'),
+        ('ACC', 'принят'),
+        ('REJ', 'отклонен'),
+    ]`
 
-*Модель User - основные данные о туристе:*
+4) Уровень сложности прохождения локации, списком кортежей
 
-`class Users(models.Model):
-    mail = models.EmailField('почта', unique=True)# поле электронной почты, оно уникально, по нему проверяю ункикальность пользователей
-    phone = models.CharField('телефон', max_length=15)
-    name = models.CharField('имя', max_length=30)
-    surname = models.CharField('фамилия', max_length=30)
-    otch = models.CharField('отчество', max_length=30)
+`LEVEL_CHOICE = [
+        ('NI', 'нет информации'),
+        ('A1', '1А'),
+        ('B1', '1Б'),
+        ('А2', '2А'),
+        ('В2', '2Б'),
+        ('А3', '3А'),
+        ('В3', '3Б'),
+    ]`
 
-    def __str__(self):
-        return f'{self.surname}'`
+*Модель Pereval - основные данные добавленные туристом:*
+
+`class Pereval(models.Model):
+    beauty_title = models.CharField(verbose_name='тип высоты',
+                                    max_length=2,
+                                    choices=BEAUTY_CHOICE,
+                                    default='NI')
+    title = models.TextField(verbose_name='название')
+    other_titles = models.TextField(verbose_name='комментарий')
+    connect = models.TextField(verbose_name='соединение',
+                               default='', blank=True)
+    add_time = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE,
+                               verbose_name='автор')
+    coords = models.ForeignKey(Coords, on_delete=models.CASCADE,
+                               verbose_name='координаты')
+    level = models.ForeignKey(Level, on_delete=models.CASCADE,
+                              verbose_name='уровень сложности')
+    status = models.CharField(choices=STATUS_CHOICE, max_length=3,
+                              default='NEW', verbose_name='статус')
+    spr_activities_types = models.CharField(max_length=2,
+                                            choices=ACTIVITIES_CHOICE,
+                                            default='1',
+                                            verbose_name='активность'
+                                            )`
+
+*Модель Author - основные данные о туристе:*
+
+`class Author(models.Model):
+    email = models.EmailField(verbose_name='электронная почта')
+    phone = models.CharField(verbose_name='номер телефона', max_length=12)
+    fam = models.CharField(verbose_name='фамилия', max_length=30)
+    name = models.CharField(verbose_name='имя', max_length=30)
+    otc = models.CharField(verbose_name='отчество', max_length=30)`
 
 *Модель Coords - Координаты локации, переданные туристом*
 
 `class Coords(models.Model):
-    latitude = models.FloatField('широта', max_length=9, blank=True)
-    longitude = models.FloatField('долгота', max_length=9, blank=True)
-    height = models.IntegerField('высота', blank=True)`
+    latitude = models.FloatField(verbose_name='широта', max_length=8)
+    longitude = models.FloatField(verbose_name='долгота', max_length=8)
+    height = models.IntegerField(verbose_name='высота')`
 
 *класс Images фотографии добавленные пользователем*
 
 `class Images(models.Model):
-    name = models.CharField(max_length=50)# название фотографии
-    photos = models.ImageField('Фото', upload_to=get_image_path, blank=True, null=True)# объект фотографии`
+    image_name = models.TextField(verbose_name='комментарий')
+    image = models.URLField(verbose_name='фотография', blank=True, null=True)
+    pereval = models.ForeignKey(Pereval, on_delete=models.CASCADE,
+                                verbose_name='перевал', related_name='image')`
 
-*Класс PerevalImages таблица объединяющая объекты таблиц PerevalAdded и Images*
+*Класс Level - добавлении информации о уровне сложности местоположения в разное время года*
 
 `class PerevalImages(models.Model):
-    pereval = models.ForeignKey(PerevalAdded, on_delete=models.CASCADE, default=0)  # ссылка на объект локации
-    images = models.ForeignKey(Images, on_delete=models.CASCADE, default=0)  # ссылка на объект фотографии`
+    winter = models.CharField(verbose_name='уровень сложности зимой',
+                              max_length=2,
+                              choices=LEVEL_CHOICE,
+                              default='NI')
+    summer = models.CharField(verbose_name='уровень сложности летом',
+                              max_length=2,
+                              choices=LEVEL_CHOICE,
+                              default='NI')
+    autumn = models.CharField(verbose_name='уровень сложности осенью',
+                              max_length=2,
+                              choices=LEVEL_CHOICE,
+                              default='NI')
+    spring = models.CharField(verbose_name='уровень сложности весной',
+                              max_length=2,
+                              choices=LEVEL_CHOICE,
+                              default='NI')`
 
-# 8 Проектирование Views и Serializers
+# 14 Проектируем Views и Serializers
+- обязательно устанавливаем Django Rest Framework, указано в пункте 4.
+- Для заполнения и тестирования работоспособности отдельных таблиц, создал классы для отдельных таблиц.
+- Реализуем submitData. Реализация метода submitData заключается в том, что турист (клиентское приложение) отправляет POST запрос в формате JSON содержащий все необходимые данные. Далее, полученный от туриста JSON на стадии валидации переводится в список словарей validated_data который разделяется на блоки, содержащие данные отдельных талиц.
 
-*установка Django Rest Framework:*
-`pip install djangorestframework`
-
-Для заполнения и тестирования работоспособности отдельных таблиц, создал 
-классы для отдельных таблиц на основе generics.ListCreateAPIView и generics.RetrieveUpdateDestroyAPIView, 
-доступные по запросу api/v1/название_модели - для просмотра списком или добавления, 
-api/v1/название_модели/pk - для редактирования, удаления.
-
-Для реализации метода submitData используются классы на основе viewsets.ModelViewSet,
-доступные по запросу api/v2/название_модели
-
-Реализация метода submitData заключается в том, что турист (клиентское приложение)
-отправляет POST запрос в формате JSON содержащий все необходимые данные.
-Далее, полученный от туриста JSON на стадии валидации переводится в список словарей validated_data
-который разделяется на блоки, содержащие данные отдельных талиц,
-например Users, Coords, Images
-
-`user = validated_data.pop('user')
-coords = validated_data.pop('coord_id')
-images = validated_data.pop('images')`
-
-Отдельные блоки данных сохраняются в побочные таблицы:
-
-`user = Users.objects.create(**user)
-coords = Coords.objects.create(**coords)`
-
-затем в основную таблицу PerevalAdded добаляются оставшиеся данные и ссылки на побочные объекты таблиц
-
-`pereval_new = PerevalAdded.objects.create(**validated_data, images=images, author=user, coord_id=coords)`
+# Примечание:
+- НЕ ЗАБЫВАЕМ добавлять установленные приложения в settings.py в INSTALLED_APPS
 
 
