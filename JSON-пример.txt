@@ -1,0 +1,27 @@
+{
+    "beauty_title": "PS",
+    "title": "Семинский перевал",
+    "other_titles": "Самый высокий на Чуйсуком тракте",
+    "connect": "Между Северным и Централиным Алтаем",
+    "author": {
+        "email": "connor9429@gmail.com",
+        "phone": "+79995554433",
+        "fam": "Чукча",
+        "name": "Андрей",
+        "otc": "Станиславович"
+    },
+    "coords": {
+        "latitude": 51.037721,
+        "longitude": 85.595078,
+        "height": 1780
+    },
+    "level": {
+        "winter": "NI",
+        "summer": "A1",
+        "autumn": "B1",
+        "spring": "NI"
+    },
+    "image": [{"image":"https://altaitg.ru/upload/medialibrary/f87/f87987866560658cad63c54eda6160db.jpg", "image_name":"Семинский перевал"}],
+    "status": "NEW",
+    "spr_activities_types": "1"
+}
