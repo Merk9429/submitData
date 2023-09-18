@@ -17,78 +17,70 @@ class TestSimple(APITransactionTestCase):
                                         'patch': 'partial_update'})
         self.my_url = '/SubmitData/'
         start_data_1 = {
-                "beauty_title": "NI",
+                "beauty_title": "PS",
                 "title": "start_title1",
                 "other_titles": "start_other_title1",
                 "connect": "",
                 "author": {
-                  "email": "abc01@yandex.ru",
-                  "phone": "74951111111",
-                  "fam": "Первов",
-                  "name": "Один",
-                  "otc": "Одинович"
-                         },
+                    "email": "Merk_94@mail.ru",
+                    "phone": "+79605558766",
+                    "fam": "Пупкин",
+                    "name": "Вячеслав",
+                    "otc": "Пупкинович"
+                },
                 "coords": {
-                  "latitude": 01.98805,
-                  "longitude": 01.92527,
-                  "height": 10011
-                          },
+                    "latitude": 27.988056,
+                    "longitude": 86.925278,
+                    "height": 8848
+                },
                 "level": {
-                  "winter": "NI",
-                  "summer": "NI",
-                  "autumn": "NI",
-                  "spring": "NI"
-                        },
+                    "winter": "NI",
+                    "summer": "NI",
+                    "autumn": "NI",
+                    "spring": "NI"
+                },
                 "image": [
-                        {
-                    "image_name": "Стартовая вершина 1",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        },
-                        {
-                    "image_name": "Стартовая вершина 2",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        }
-                        ],
+                    {
+                        "image_name": "Добавляю фото к новому перевалу",
+                        "image": "https://www.nastol.com.ua/pic/201411/1280x1024/nastol.com.ua-116730.jpg"
+                    }
+                ],
                 "status": "NEW",
-                "spr_activities_types": "3",
-               }
+                "spr_activities_types": "1"
+            }
 
         start_data_2 = {
-                "beauty_title": "NI",
+                "beauty_title": "PS",
                 "title": "start_title2",
                 "other_titles": "start_other_title2",
                 "connect": "",
                 "author": {
-                  "email": "abc02@yandex.ru",
-                  "phone": "749522222",
-                  "fam": "Второв",
-                  "name": "Два",
-                  "otc": "Двович"
-                         },
+                    "email": "connor9429@gmail.com",
+                    "phone": "+79995554433",
+                    "fam": "Чукча",
+                    "name": "Андрей",
+                    "otc": "Станиславович"
+                },
                 "coords": {
-                  "latitude": 01.98805,
-                  "longitude": 01.92527,
-                  "height": 10011
-                          },
+                    "latitude": 51.037721,
+                    "longitude": 85.595078,
+                    "height": 1780
+                },
                 "level": {
-                  "winter": "NI",
-                  "summer": "NI",
-                  "autumn": "NI",
-                  "spring": "NI"
-                        },
+                    "winter": "NI",
+                    "summer": "A1",
+                    "autumn": "B1",
+                    "spring": "NI"
+                },
                 "image": [
-                        {
-                    "image_name": "Стартовая вершина 3",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        },
-                        {
-                    "image_name": "Стартовая вершина 4",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        }
-                        ],
+                    {
+                        "image_name": "Семинский перевал",
+                        "image": "https://altaitg.ru/upload/medialibrary/f87/f87987866560658cad63c54eda6160db.jpg"
+                    }
+                ],
                 "status": "NEW",
-                "spr_activities_types": "3",
-               }
+                "spr_activities_types": "1"
+            }
 
         # start_data_1 = json.dumps(start_data_1)
         # start_data_2 = json.dumps(start_data_2)
@@ -118,31 +110,31 @@ class TestSimple(APITransactionTestCase):
                   "fam": "Иванов",
                   "name": "Иван",
                   "otc": "Иванович"
-                         },
+                },
                 "coords": {
                   "latitude": 11.988056,
                   "longitude": 11.925278,
                   "height": 11111
-                          },
+                },
                 "level": {
                   "winter": "NI",
                   "summer": "NI",
                   "autumn": "NI",
                   "spring": "NI"
-                        },
+                },
                 "image": [
-                        {
-                    "image_name": "Тестовая вершина 1",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        },
-                        {
-                    "image_name": "Тестовая вершина 2",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        }
-                        ],
+                    {
+                        "image_name": "Тестовая вершина 1",
+                        "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
+                    },
+                    {
+                        "image_name": "Тестовая вершина 2",
+                        "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
+                    }
+                ],
                 "status": "NEW",
                 "spr_activities_types": "1"
-               }
+            }
 
         data_2 = {
                 "beauty_title": "GL",
@@ -155,31 +147,31 @@ class TestSimple(APITransactionTestCase):
                   "fam": "Иванов",
                   "name": "Иван",
                   "otc": "Иванович"
-                         },
+                },
                 "coords": {
                   "latitude": 11.988056,
                   "longitude": 11.925278,
                   "height": 11111
-                          },
+                },
                 "level": {
                   "winter": "NI",
                   "summer": "NI",
                   "autumn": "NI",
                   "spring": "NI"
-                        },
+                },
                 "image": [
-                        {
-                    "image_name": "Тестовая вершина 1",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        },
-                        {
-                    "image_name": "Тестовая вершина 2",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        }
-                        ],
+                    {
+                        "image_name": "Тестовая вершина 1",
+                        "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
+                    },
+                    {
+                        "image_name": "Тестовая вершина 2",
+                        "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
+                    }
+                ],
                 "status": "NEW",
                 "spr_activities_types": "1"
-               }
+            }
 
         request_1 = self.factory.post(self.my_url,
                                       data_1,
@@ -261,31 +253,31 @@ class TestSimple(APITransactionTestCase):
                   "fam": "Иванов",
                   "name": "Иван",
                   "otc": "Иванович"
-                         },
+                },
                 "coords": {
                   "latitude": 11.988056,
                   "longitude": 11.925278,
                   "height": 11111
-                          },
+                },
                 "level": {
                   "winter": "NI",
                   "summer": "NI",
                   "autumn": "NI",
                   "spring": "NI"
-                        },
+                },
                 "image": [
-                        {
-                    "image_name": "Тестовая вершина 1",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        },
-                        {
-                    "image_name": "Тестовая вершина 2",
-                    "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
-                        }
-                        ],
+                    {
+                        "image_name": "Тестовая вершина 1",
+                        "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
+                    },
+                    {
+                        "image_name": "Тестовая вершина 2",
+                        "image": "https://klike.net/uploads/posts/2022-11/1667370486_7-8.jpg"
+                    }
+                ],
                 "status": "NEW",
                 "spr_activities_types": "1"
-               }
+            }
 
         request = self.factory.post(self.my_url,
                                       data,
