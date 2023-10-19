@@ -1,0 +1,27 @@
+services:
+  web-app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./service:/service
+    environment:
+      - FSTR_DB_HOST=database
+      - FSTR_DB_PORT=dbname
+      - FSTR_DB_LOGIN=dbuser
+      - FSTR_DB_PASS=pass
+
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+
+    depends_on:
+      - database
+
+  database:
+    image: postgres:14.6-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=dbname
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=pass
